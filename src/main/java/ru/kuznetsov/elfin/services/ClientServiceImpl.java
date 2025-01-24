@@ -18,9 +18,6 @@ import java.util.*;
 public class ClientServiceImpl implements ClientService {
 
     private static final String BPMN_LOCATION = "src/main/resources/bpmn/ElfinTest.bpmn";
-    private static final String NOT_RF_RESIDENT_INN_START = "9909";
-    private static final Integer BLOCK_REGION = 24;
-    private static final BigInteger CAPITAL_LOW_LIMIT = new BigInteger("5000000");
     private final ZeebeClient zeebeClient;
 
     @Override
