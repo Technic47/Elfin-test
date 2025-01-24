@@ -1,7 +1,6 @@
 package ru.kuznetsov.elfin.models.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -23,10 +22,10 @@ public class ClientDto {
     private String inn;
 
     @Schema(description = "Регион")
-    @NotBlank(message = "Регион обязателен")
-    private String region;
+    @NotNull
+    private Integer region;
 
     @Schema(description = "Капитал")
-    @NotBlank(message = "Капитал обязателен")
-    private String capital;
+    @NotNull
+    private BigInteger capital;
 }
