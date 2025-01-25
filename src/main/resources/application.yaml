@@ -5,13 +5,16 @@ spring:
 server:
   port: 9090
 
+bpmn:
+  location: ${BPMN_LOCATION:src/main/resources/bpmn/ElfinTest.bpmn}
+
 camunda-connection:
   gateWayAddress: ${GATE_WAY_ADDRESS:localhost}
   gateWayPort: ${GATE_WAY_PORT:26500}
   grpc: ${GRPC_ADDRESS:localhost}
-  grpc-port: ${GRPC_ADDRESS:26500}
+  grpc-port: ${GRPC_PORT:26500}
   rest: ${REST_ADDRESS:localhost}
-  rest-port: ${REST_ADDRESS:26500}
+  rest-port: ${REST_PORT:26500}
   oAuthAPI: ${OAUTH_API:http://localhost:18080/auth/realms/camunda-platform/protocol/openid-connect/token}
   audience: ${AUDIENCE:zeebe-api}
   clientId: ${CLIENT_ID:zeebe}

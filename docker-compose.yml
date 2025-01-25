@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  client-grade:
+    build: .
+    image: client-grade:latest
+    hostname: client-grade
+    ports:
+      - "9090:9090"
+    expose:
+      - "9090:9090"
+    environment:
+      BPMN_LOCATION: /app/bpmn/ElfinTest.bpmn
+      GATE_WAY_ADDRESS: zeebe
+      GATE_WAY_PORT: 26500
+    networks:
+      - camunda_camunda-platform
+
+networks:
+  camunda_camunda-platform:
+    external: true

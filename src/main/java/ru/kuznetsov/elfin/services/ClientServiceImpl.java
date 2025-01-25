@@ -6,6 +6,7 @@ import io.camunda.zeebe.client.api.response.Process;
 import io.camunda.zeebe.client.api.response.ProcessInstanceResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.kuznetsov.elfin.models.dto.ClientDto;
 
@@ -18,8 +19,8 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
-
-    private static final String BPMN_LOCATION = "src/main/resources/bpmn/ElfinTest.bpmn";
+    @Value("${bpmn.location}")
+    private String BPMN_LOCATION;
     public static final String INN_VARIABLE = "inn";
     public static final String REGION_VARIABLE = "region";
     public static final String CAPITAL_VARIABLE = "capital";
