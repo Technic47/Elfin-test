@@ -1,6 +1,5 @@
 package ru.kuznetsov.elfin.services;
 
-import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.DeploymentEvent;
 import io.camunda.zeebe.client.api.response.Process;
 import io.camunda.zeebe.client.api.response.ProcessInstanceResult;
@@ -8,11 +7,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ru.kuznetsov.elfin.connectors.CamundaConnector;
 import ru.kuznetsov.elfin.models.dto.ClientDto;
 
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -25,11 +24,11 @@ public class ClientServiceImpl implements ClientService {
     public static final String REGION_VARIABLE = "region";
     public static final String CAPITAL_VARIABLE = "capital";
     public static final String PASS_VARIABLE = "pass";
-    private final ZeebeClient zeebeClient;
+    private final CamundaConnector camundaConnector;
 
     @Override
     public Boolean gradeClient(ClientDto clientInfo) {
-        DeploymentEvent deploymentEvent = deployClientGradeProcess();
+        DeploymentEvent deploymentEvent = camundaConnector.deployProcess(BPMN_LOCATION);
 
         String bpmnProcessId = deploymentEvent.getProcesses()
                 .stream()
@@ -37,26 +36,8 @@ public class ClientServiceImpl implements ClientService {
                 .get()
                 .getBpmnProcessId();
 
-        ProcessInstanceResult result = createClientGradeInstance(bpmnProcessId, clientInfo);
-        return (Boolean) result.getVariablesAsMap().get(PASS_VARIABLE);
-    }
-
-    private DeploymentEvent deployClientGradeProcess() {
-        return zeebeClient.newDeployResourceCommand()
-                .addResourceFile(BPMN_LOCATION)
-                .send()
-                .join();
-
-    }
-
-    private ProcessInstanceResult createClientGradeInstance(String bpmnProcessId, ClientDto clientInfo) {
-        return zeebeClient.newCreateInstanceCommand()
-                .bpmnProcessId(bpmnProcessId)
-                .latestVersion()
-                .variables(getVariables(clientInfo))
-                .withResult()
-                .send()
-                .join();
+        ProcessInstanceResult result = camundaConnector.createInstance(bpmnProcessId, getVariables(clientInfo));
+        return (Boolean) result.getVariable(PASS_VARIABLE);
     }
 
     private Map<String, Object> getVariables(ClientDto clientInfo) {
