@@ -1,0 +1,64 @@
+{
+	"info": {
+		"_postman_id": "75621ba3-8e3a-4e37-b17c-a764e97eb9f2",
+		"name": "Elfin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25312518"
+	},
+	"item": [
+		{
+			"name": "Client Grade",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"inn\": \"990ff96756\",\r\n    \"region\": \"24\",\r\n    \"capital\": \"5000000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/v1/client/grade",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"v1",
+						"client",
+						"grade"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Client with results",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/api/v1/client/results/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"v1",
+						"client",
+						"results",
+						"all"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
