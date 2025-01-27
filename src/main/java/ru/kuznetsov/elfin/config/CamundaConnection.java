@@ -21,4 +21,6 @@ public class CamundaConnection {
     private String audience;
     private String clientId;
     private String clientSecret;
+    private String elasticSearchHost;
+    private String elasticSearchPort;
 }

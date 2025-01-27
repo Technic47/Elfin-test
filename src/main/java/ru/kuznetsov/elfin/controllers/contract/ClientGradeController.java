@@ -1,4 +1,4 @@
-package ru.kuznetsov.elfin.controllers;
+package ru.kuznetsov.elfin.controllers.contract;
 
 import org.springframework.http.ResponseEntity;
 import ru.kuznetsov.elfin.models.dto.ClientDto;

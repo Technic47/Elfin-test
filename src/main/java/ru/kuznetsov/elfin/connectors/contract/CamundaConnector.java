@@ -1,4 +1,4 @@
-package ru.kuznetsov.elfin.connectors;
+package ru.kuznetsov.elfin.connectors.contract;
 
 import io.camunda.zeebe.client.api.response.DeploymentEvent;
 import io.camunda.zeebe.client.api.response.ProcessInstanceResult;

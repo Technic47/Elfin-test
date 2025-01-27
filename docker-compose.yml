@@ -13,6 +13,8 @@ services:
       BPMN_LOCATION: /app/bpmn/ElfinTest.bpmn
       GATE_WAY_ADDRESS: zeebe
       GATE_WAY_PORT: 26500
+      ELASTIC_SEARCH_HOST: elasticsearch
+      ELASTIC_SEARCH_PORT: 9200
     networks:
       - camunda_camunda-platform
 

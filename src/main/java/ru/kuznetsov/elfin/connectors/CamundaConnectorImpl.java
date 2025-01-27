@@ -5,6 +5,7 @@ import io.camunda.zeebe.client.api.response.DeploymentEvent;
 import io.camunda.zeebe.client.api.response.ProcessInstanceResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import ru.kuznetsov.elfin.connectors.contract.CamundaConnector;
 
 import java.util.Map;
 

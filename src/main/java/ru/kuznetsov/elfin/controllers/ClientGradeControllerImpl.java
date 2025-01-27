@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.kuznetsov.elfin.controllers.contract.ClientGradeController;
 import ru.kuznetsov.elfin.models.dto.ClientDto;
-import ru.kuznetsov.elfin.services.ClientService;
+import ru.kuznetsov.elfin.models.entity.ClientWithResultEntity;
+import ru.kuznetsov.elfin.services.contract.ClientService;
+import ru.kuznetsov.elfin.services.contract.ClientWithResultService;
 
 @RestController
 @RequestMapping("/api/v1/client")
@@ -24,6 +27,7 @@ import ru.kuznetsov.elfin.services.ClientService;
 public class ClientGradeControllerImpl implements ClientGradeController {
 
     private final ClientService clientService;
+    private final ClientWithResultService clientWithResultService;
 
     @Override
     @PostMapping("/grade")
@@ -39,6 +43,8 @@ public class ClientGradeControllerImpl implements ClientGradeController {
             )
     })
     public ResponseEntity<Boolean> gradeClient(@Valid @RequestBody ClientDto clientInfo) {
-        return ResponseEntity.ok(clientService.gradeClient(clientInfo));
+        Boolean result = clientService.gradeClient(clientInfo);
+        clientWithResultService.save(new ClientWithResultEntity(clientInfo, result));
+        return ResponseEntity.ok(result);
     }
 }

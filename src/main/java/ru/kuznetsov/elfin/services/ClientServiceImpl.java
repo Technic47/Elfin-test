@@ -7,8 +7,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.kuznetsov.elfin.connectors.CamundaConnector;
+import ru.kuznetsov.elfin.connectors.contract.CamundaConnector;
 import ru.kuznetsov.elfin.models.dto.ClientDto;
+import ru.kuznetsov.elfin.services.contract.ClientService;
 
 import java.util.Comparator;
 import java.util.HashMap;

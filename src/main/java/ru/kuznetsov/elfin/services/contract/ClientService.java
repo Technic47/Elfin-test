@@ -1,4 +1,4 @@
-package ru.kuznetsov.elfin.services;
+package ru.kuznetsov.elfin.services.contract;
 
 import ru.kuznetsov.elfin.models.dto.ClientDto;
 
