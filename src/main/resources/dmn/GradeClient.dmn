@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_07hu559" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Web Modeler" exporterVersion="218a9c7" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.6.0">
+  <decision id="Decision_1o0vasz" name="Decision 1">
+    <decisionTable id="DecisionTable_0ofmtvh" hitPolicy="FIRST">
+      <input id="InputClause_0ikxhk8" label="Inn is IP">
+        <inputExpression id="LiteralExpression_0mgthrv" typeRef="boolean">
+          <text>string length(inn) = 12</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0f8bck3" label="Region is prohibited">
+        <inputExpression id="LiteralExpression_0k0pzvm" typeRef="boolean">
+          <text>region = 24</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0jyn0n3" label="Capital is less then 5M">
+        <inputExpression id="LiteralExpression_09m51r5" typeRef="boolean">
+          <text>capital &lt; 5000000</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1nag0gd" label="Inn non RF">
+        <inputExpression id="LiteralExpression_00r7e9q" typeRef="boolean">
+          <text>substring(inn, 1, 4) = "9909"</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_1rnfmgg" name="result" typeRef="boolean" />
+      <rule id="DecisionRule_1j06gva">
+        <inputEntry id="UnaryTests_1ddzwri">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ox52mx">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ua34i0">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ynuw58">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06cphgq">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1x23rig">
+        <inputEntry id="UnaryTests_0opsbd1">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0vjiuxz">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1vunmiu">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_07dubca">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_17q2o5e">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ua82ey">
+        <inputEntry id="UnaryTests_1izl18d">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0e3sqkd">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1dfvmm7">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0qi7n78">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0g6ew3u">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ta1850">
+        <inputEntry id="UnaryTests_1nvrnzo">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19jvbv9">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1tg2uv7">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0f4r2up">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0c3jhux">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_16oz3r8">
+        <inputEntry id="UnaryTests_1ets5kw">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1j2n9jq">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_076xufl">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1atfa4o">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0vl49p7">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape id="DMNShape_0fu85w6" dmnElementRef="Decision_1o0vasz">
+        <dc:Bounds height="80" width="180" x="160" y="80" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

@@ -8,6 +8,9 @@ server:
 bpmn:
   location: ${BPMN_LOCATION:src/main/resources/bpmn/ElfinTest.bpmn}
 
+dmn:
+  location: ${BPMN_LOCATION:src/main/resources/dmn/GradeClient.dmn}
+
 camunda-connection:
   gateWayAddress: ${GATE_WAY_ADDRESS:localhost}
   gateWayPort: ${GATE_WAY_PORT:26500}

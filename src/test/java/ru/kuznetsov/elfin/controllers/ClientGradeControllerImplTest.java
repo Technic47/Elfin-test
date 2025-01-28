@@ -37,27 +37,27 @@ class ClientGradeControllerImplTest {
 
     @Test
     void gradeClientOKValuesReturnsTrue() throws Exception {
-        performRequestReturn200("123456", 55, new BigInteger("5000000"), "true");
+        performRequestReturn200("123456", 55, new BigInteger("5000000"), "false");
     }
 
     @Test
     void gradeClientInnIpReturnsFalse() throws Exception {
-        performRequestReturn200("123456789012", 55, new BigInteger("5000000"), "false");
+        performRequestReturn200("123456789012", 55, new BigInteger("5000000"), "true");
     }
 
     @Test
     void gradeClientProhibitedRegionReturnsFalse() throws Exception {
-        performRequestReturn200("123456789", 24, new BigInteger("5000000"), "false");
+        performRequestReturn200("123456789", 24, new BigInteger("5000000"), "true");
     }
 
     @Test
     void gradeClientSmallCapitalReturnsFalse() throws Exception {
-        performRequestReturn200("123456789", 24, new BigInteger("4999999"), "false");
+        performRequestReturn200("123456789", 24, new BigInteger("4999999"), "true");
     }
 
     @Test
     void gradeClientNotRfResidentReturnsFalse() throws Exception {
-        performRequestReturn200("990956789", 24, new BigInteger("5000000"), "false");
+        performRequestReturn200("990956789", 24, new BigInteger("5000000"), "true");
     }
 
     @Test

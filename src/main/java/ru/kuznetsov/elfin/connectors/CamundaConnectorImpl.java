@@ -2,6 +2,7 @@ package ru.kuznetsov.elfin.connectors;
 
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.DeploymentEvent;
+import io.camunda.zeebe.client.api.response.EvaluateDecisionResponse;
 import io.camunda.zeebe.client.api.response.ProcessInstanceResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,6 @@ public class CamundaConnectorImpl implements CamundaConnector {
 
     @Override
     public DeploymentEvent deployProcess(String bpmnPath) {
-
         return zeebeClient.newDeployResourceCommand()
                 .addResourceFile(bpmnPath)
                 .send()
@@ -31,6 +31,14 @@ public class CamundaConnectorImpl implements CamundaConnector {
                 .latestVersion()
                 .variables(variables)
                 .withResult()
+                .send()
+                .join();
+    }
+
+    public EvaluateDecisionResponse evaluateDecision(String decisionId, Map<String, Object> variables) {
+        return zeebeClient.newEvaluateDecisionCommand()
+                .decisionId(decisionId)
+                .variables(variables)
                 .send()
                 .join();
     }

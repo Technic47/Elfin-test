@@ -1,8 +1,8 @@
 package ru.kuznetsov.elfin.services;
 
+import io.camunda.zeebe.client.api.response.Decision;
 import io.camunda.zeebe.client.api.response.DeploymentEvent;
-import io.camunda.zeebe.client.api.response.Process;
-import io.camunda.zeebe.client.api.response.ProcessInstanceResult;
+import io.camunda.zeebe.client.api.response.EvaluateDecisionResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +21,8 @@ import java.util.Map;
 public class ClientServiceImpl implements ClientService {
     @Value("${bpmn.location}")
     private String BPMN_LOCATION;
+    @Value("${dmn.location}")
+    private String DMN_LOCATION;
     public static final String INN_VARIABLE = "inn";
     public static final String REGION_VARIABLE = "region";
     public static final String CAPITAL_VARIABLE = "capital";
@@ -29,16 +31,16 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Boolean gradeClient(ClientDto clientInfo) {
-        DeploymentEvent deploymentEvent = camundaConnector.deployProcess(BPMN_LOCATION);
+        DeploymentEvent deploymentEvent = camundaConnector.deployProcess(DMN_LOCATION);
 
-        String bpmnProcessId = deploymentEvent.getProcesses()
+        String dmnDecisionId = deploymentEvent.getDecisions()
                 .stream()
-                .max(Comparator.comparingInt(Process::getVersion))
+                .max(Comparator.comparingInt(Decision::getVersion))
                 .get()
-                .getBpmnProcessId();
+                .getDmnDecisionId();
 
-        ProcessInstanceResult result = camundaConnector.createInstance(bpmnProcessId, getVariables(clientInfo));
-        return (Boolean) result.getVariable(PASS_VARIABLE);
+        EvaluateDecisionResponse decisionResult = camundaConnector.evaluateDecision(dmnDecisionId, getVariables(clientInfo));
+        return !decisionResult.getDecisionOutput().equals("false");
     }
 
     private Map<String, Object> getVariables(ClientDto clientInfo) {
