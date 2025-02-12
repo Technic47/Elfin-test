@@ -10,14 +10,43 @@ services:
     expose:
       - "9090:9090"
     environment:
-      BPMN_LOCATION: /app/bpmn/ElfinTest.bpmn
-      GATE_WAY_ADDRESS: zeebe
-      GATE_WAY_PORT: 26500
+      DMN_LOCATION: /app/dmn/GradeClient.dmn
       ELASTIC_SEARCH_HOST: elasticsearch
-      ELASTIC_SEARCH_PORT: 9200
+    depends_on:
+      - elasticsearch
     networks:
-      - camunda_camunda-platform
+      - camunda-platform
+
+  elasticsearch: # https://hub.docker.com/_/elasticsearch
+    image: elasticsearch:8.15.5
+    container_name: elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      # allow running with low disk space
+      - cluster.routing.allocation.disk.threshold_enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:9200/_cat/health | grep -q green" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - elastic:/usr/share/elasticsearch/data
+    networks:
+      - camunda-platform
+
+volumes:
+  elastic:
 
 networks:
-  camunda_camunda-platform:
-    external: true
+  camunda-platform:

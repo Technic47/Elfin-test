@@ -11,6 +11,7 @@ WORKDIR /app
 
 COPY --from=builder /tmp/target/Elfin*.jar /app/Elfin.jar
 COPY --from=builder /tmp/src/main/resources/bpmn /app/bpmn
+COPY --from=builder /tmp/src/main/resources/dmn /app/dmn
 
 EXPOSE 9090
 ENTRYPOINT ["java", "-jar", "/app/Elfin.jar"]

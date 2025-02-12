@@ -13,12 +13,12 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 @RequiredArgsConstructor
 public class ElasticSearchConfig extends ElasticsearchConfiguration {
 
-    private final CamundaConnection camundaConnection;
+    private final ElasticsearchConnection elasticsearchConnection;
 
     @Override
     public ClientConfiguration clientConfiguration() {
         return ClientConfiguration.builder()
-                .connectedTo(camundaConnection.getElasticSearchHost() + ":" + camundaConnection.getElasticSearchPort())
+                .connectedTo(elasticsearchConnection.getHost() + ":" + elasticsearchConnection.getPort())
                 .build();
     }
 }

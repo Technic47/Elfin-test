@@ -8,13 +8,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.kuznetsov.elfin.controllers.contract.ClientGradeController;
 import ru.kuznetsov.elfin.models.dto.ClientDto;
 import ru.kuznetsov.elfin.models.entity.ClientWithResultEntity;
 import ru.kuznetsov.elfin.services.contract.ClientService;
@@ -24,12 +25,13 @@ import ru.kuznetsov.elfin.services.contract.ClientWithResultService;
 @RequestMapping("/api/v1/client")
 @RequiredArgsConstructor
 @Tag(name = "client-api", description = "API 'Клиенты'")
-public class ClientGradeControllerImpl implements ClientGradeController {
+public class ClientGradeControllerImpl {
 
     private final ClientService clientService;
     private final ClientWithResultService clientWithResultService;
+    private static final Logger LOG = LogManager.getLogger(ClientGradeControllerImpl.class);
 
-    @Override
+
     @PostMapping("/grade")
     @Operation(summary = "Оценка клиента", description = "Обновление данных устройства")
     @ApiResponses(value = {
@@ -43,6 +45,7 @@ public class ClientGradeControllerImpl implements ClientGradeController {
             )
     })
     public ResponseEntity<Boolean> gradeClient(@Valid @RequestBody ClientDto clientInfo) {
+        LOG.info("Client info: {}", clientInfo);
         Boolean result = clientService.gradeClient(clientInfo);
         clientWithResultService.save(new ClientWithResultEntity(clientInfo, result));
         return ResponseEntity.ok(result);

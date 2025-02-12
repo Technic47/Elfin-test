@@ -1,45 +1,28 @@
 package ru.kuznetsov.elfin.config;
 
-import io.camunda.zeebe.client.ZeebeClient;
-import io.camunda.zeebe.client.impl.oauth.OAuthCredentialsProvider;
-import io.camunda.zeebe.client.impl.oauth.OAuthCredentialsProviderBuilder;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.camunda.bpm.application.PostDeploy;
+import org.camunda.bpm.application.ProcessApplication;
+import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
+import org.camunda.bpm.dmn.engine.DmnEngine;
+import org.camunda.bpm.dmn.engine.DmnEngineConfiguration;
+import org.camunda.bpm.engine.DecisionService;
+import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.variable.VariableMap;
+import org.camunda.bpm.engine.variable.Variables;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
+@ProcessApplication("Grade client")
 public class SpringConfig {
 
-    private final CamundaConnection camundaConnection;
-
     @Bean
-    public ZeebeClient getZeebeClient(OAuthCredentialsProvider credentialsProvider) {
-        try {
-            ZeebeClient client = ZeebeClient.newClientBuilder()
-                    .gatewayAddress(camundaConnection.getGateWayAddress() + ":" + camundaConnection.getGateWayPort())
-                    .usePlaintext()
-//                    .grpcAddress(URI.create(camundaConnection.getGrpc() + ":" + camundaConnection.getGrpcPort()))
-//                    .restAddress(URI.create(camundaConnection.getRest() + ":" + camundaConnection.getRestPort()))
-//                    .credentialsProvider(credentialsProvider)
-                    .build();
-
-            client.newTopologyRequest().send().join();
-            return client;
-        } catch (Exception e) {
-            System.out.println("Zeebe client creation failed");
-            System.out.println(e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Bean
-    public OAuthCredentialsProvider getOauthCredentialsProvider() {
-        return new OAuthCredentialsProviderBuilder()
-                .authorizationServerUrl(camundaConnection.getOAuthAPI())
-                .audience(camundaConnection.getAudience())
-                .clientId(camundaConnection.getClientId())
-                .clientSecret(camundaConnection.getClientSecret())
-                .build();
+    public DmnEngine getDmnEngine(){
+        return DmnEngineConfiguration
+                .createDefaultDmnEngineConfiguration()
+                .buildEngine();
     }
 }

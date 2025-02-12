@@ -1,46 +1,46 @@
 package ru.kuznetsov.elfin.services;
 
-import io.camunda.zeebe.client.api.response.Decision;
-import io.camunda.zeebe.client.api.response.DeploymentEvent;
-import io.camunda.zeebe.client.api.response.EvaluateDecisionResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.camunda.bpm.dmn.engine.DmnDecision;
+import org.camunda.bpm.dmn.engine.DmnDecisionResult;
+import org.camunda.bpm.dmn.engine.DmnDecisionResultEntries;
+import org.camunda.bpm.dmn.engine.DmnEngine;
+import org.camunda.bpm.model.dmn.Dmn;
+import org.camunda.bpm.model.dmn.DmnModelInstance;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.kuznetsov.elfin.connectors.contract.CamundaConnector;
 import ru.kuznetsov.elfin.models.dto.ClientDto;
 import ru.kuznetsov.elfin.services.contract.ClientService;
 
-import java.util.Comparator;
+import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
-    @Value("${bpmn.location}")
-    private String BPMN_LOCATION;
     @Value("${dmn.location}")
     private String DMN_LOCATION;
     public static final String INN_VARIABLE = "inn";
     public static final String REGION_VARIABLE = "region";
     public static final String CAPITAL_VARIABLE = "capital";
-    public static final String PASS_VARIABLE = "pass";
-    private final CamundaConnector camundaConnector;
+    public static final String RESULT_VARIABLE = "result";
+    private final DmnEngine dmnEngine;
 
     @Override
     public Boolean gradeClient(ClientDto clientInfo) {
-        DeploymentEvent deploymentEvent = camundaConnector.deployProcess(DMN_LOCATION);
+        DmnModelInstance modelInstance = Dmn.readModelFromFile(new File(DMN_LOCATION));
 
-        String dmnDecisionId = deploymentEvent.getDecisions()
-                .stream()
-                .max(Comparator.comparingInt(Decision::getVersion))
-                .get()
-                .getDmnDecisionId();
+        List<DmnDecision> dmnDecisions = dmnEngine.parseDecisions(modelInstance);
+        DmnDecision dmnDecision = dmnDecisions.get(0);
 
-        EvaluateDecisionResponse decisionResult = camundaConnector.evaluateDecision(dmnDecisionId, getVariables(clientInfo));
-        return !decisionResult.getDecisionOutput().equals("false");
+        DmnDecisionResult dmnDecisionResultEntries = dmnEngine.evaluateDecision(dmnDecision, getVariables(clientInfo));
+        DmnDecisionResultEntries firstResult = dmnDecisionResultEntries.getFirstResult();
+
+        return firstResult == null || !firstResult.get(RESULT_VARIABLE).equals(false);
     }
 
     private Map<String, Object> getVariables(ClientDto clientInfo) {

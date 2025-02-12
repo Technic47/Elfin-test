@@ -33,7 +33,7 @@ class ClientGradeControllerImplTest {
     @Autowired
     protected MockMvc mockMvc;
     @Autowired
-    protected ObjectMapper om;
+    protected ObjectMapper om; 
 
     @Test
     void gradeClientOKValuesReturnsTrue() throws Exception {
